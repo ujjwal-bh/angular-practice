@@ -1,12 +1,11 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
-
-
+import { Observable } from 'rxjs';
 
 export interface IUser{
   id: number,
-  name: string,
-  isActive: boolean
+  login: string,
+  avatar_url: string
   
 }
 
@@ -15,45 +14,31 @@ export interface IUser{
 })
 export class UserService {
 
-  constructor() { }
+  constructor(private http: HttpClient){}
 
-   private users: IUser[] = [
-    {
-      id: 1,
-      name: "ujjwal",
-      isActive: true
-    },
-    {
-      id: 2,
-      name: "prajwal",
-      isActive: false
-    },
-    {
-      id: 3,
-      name: "nawa", 
-      isActive: true
-    }
-  ]
-
-
-    getUsers(): IUser[]{
-      return this.users;
-    }
-
-    getSingleUser(id: number): IUser{
-      const user = this.users.filter(user => user.id === id)
-      if(user.length > 0){
-        return user[0]
-      }
-      return {
-        id: 0,
-        name: "",
-        isActive: false
-      };
-    }
   
+backendUrl = 'https://api.github.com/users'
+
+  //  private users: IUser[] = [
+   
+  // ]
 
 
+    getUsers(): Observable<IUser[]>{
+      // users get
+      const users = this.http.get<IUser[]>(this.backendUrl)
+      return users;
+    }
 
-
+    // getSingleUser(id: number): IUser{
+    //   const user = this.users.filter(user => user.id === id)
+    //   if(user.length > 0){
+    //     return user[0]
+    //   }
+    //   return {
+    //     id: 0,
+    //     name: "",
+    //     isActive: false
+    //   };
+    // }
 }
